@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:homestay_raya/views/screens/loginscreen.dart';
-
-import 'registrationscreen.dart';
+import 'package:homestay_raya/views/screens/registrationscreen.dart';
+import 'package:homestay_raya/models/user.dart';
+import 'package:homestay_raya/views/shared/mainmenu.dart';
 
 class MainScreen extends StatefulWidget {
-  const MainScreen({super.key});
+  final User user;
+  const MainScreen({super.key, required this.user});
 
   @override
   State<MainScreen> createState() => _MainScreenState();
@@ -12,16 +14,41 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return WillPopScope(
         onWillPop: () async => false,
         child: Scaffold(
-          appBar: AppBar(title: const Text("Profile"), actions: [
-            IconButton(
-                onPressed: _registrationForm,
-                icon: const Icon(Icons.app_registration)),
-            IconButton(onPressed: _loginForm, icon: const Icon(Icons.login)),
-          ]),
+          appBar: AppBar(
+            title: const Text("Homestay Raya"),
+            actions: <Widget>[
+              Padding(
+                  padding: EdgeInsets.only(right: 20.0),
+                  child: IconButton(
+                    onPressed: () {},
+                    icon: const Icon(Icons.search),
+                  )),
+              Padding(
+                padding: const EdgeInsets.only(right: 20.0),
+                child: IconButton(
+                  onPressed: () {
+                    IconButton(
+                        onPressed: _registrationForm,
+                        icon: const Icon(Icons.app_registration));
+                    IconButton(
+                        onPressed: _loginForm, icon: const Icon(Icons.login));
+                  },
+                  icon: const Icon(Icons.account_circle_rounded),
+                ),
+              ),
+            ],
+          ),
+          body: const Center(child: Text("Homestay")),
+          drawer: MainMenuWidget(user: widget.user),
         ));
   }
 
