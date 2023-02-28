@@ -1,11 +1,14 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:homestay_raya/config.dart';
+import 'package:homestay_raya/views/screens/loginscreen.dart';
+import 'package:homestay_raya/views/screens/mainscreen.dart';
 
-import 'config.dart';
+import '../../config.dart';
+import '../../models/user.dart';
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({super.key});
@@ -172,6 +175,19 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       ),
                     ],
                   ),
+                  Container(
+                    margin: const EdgeInsets.only(top: 30),
+                    child: MaterialButton(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.0)),
+                      minWidth: 115,
+                      height: 50,
+                      elevation: 10,
+                      onPressed: _goLogin,
+                      color: Theme.of(context).colorScheme.primary,
+                      child: const Text('Continue'),
+                    ),
+                  )
                 ]),
               ),
             ),
@@ -268,7 +284,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
   loadEula() async {
     WidgetsFlutterBinding.ensureInitialized();
-    //eula = await rootBundle.loadString('assets/images/eula.txt');
+    eula = await rootBundle.loadString('assets/images/eula.txt');
   }
 
   showEula() {
@@ -318,7 +334,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
   void _registerUser(String name, String email, String phone, String pass) {
     try {
-      http.post(Uri.parse("${Config.SERVER}/php/register_user.php"), body: {
+      http.post(Uri.parse("${ServerConfig.SERVER}/php/register_user.php"), body: {
         "name": name,
         "email": email,
         "phone": phone,
@@ -349,5 +365,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     } catch (e) {
       print(e.toString());
     }
+  }
+  void _goLogin() {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (content) => const LoginScreen()));
   }
 }
